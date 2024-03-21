@@ -28,20 +28,22 @@ class ComicsController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $formData = $request->all();
+{
+    $formData = $request->all();
 
-        $new_comic = new Comic(); 
-        $new_comic->fill();
-        $new_comic->save();
-    }
+    $new_comic = new Comics(); // Corrected the model name
+    $new_comic->fill($formData); // Fill the model with form data
+    $new_comic->save();
 
+    return redirect()->route('comics.show', ['comics' => $new_comic->id]);
+}
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        //
+        $comic = Comics::findOrFail($id); // Utilizzo del modello Comics
+        return view('pages.comics.show', compact('comic'));
     }
 
     /**
@@ -49,7 +51,8 @@ class ComicsController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $comic = Comics::findOrFail($id);
+        return view('pages.comics.edit',compact('comic'));
     }
 
     /**
@@ -57,7 +60,10 @@ class ComicsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $formData = $request->all();
+        $comic = Comics::findOrFail($id);
+        $comic->update($formData);
+        return redirect()->route('comics.show', ['comics' => $comic->id]);
     }
 
     /**
@@ -65,6 +71,8 @@ class ComicsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $comic = Comics::findOrFail($id);
+        $comic->delete();
+        return redirect()->route('comics.index');
     }
 }

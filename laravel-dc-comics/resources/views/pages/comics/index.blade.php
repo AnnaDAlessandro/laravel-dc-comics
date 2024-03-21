@@ -24,6 +24,7 @@
                 <th scope="col">Series</th>
                 <th scope="col">Sale_date</th>
                 <th scope="col">Type</th>
+                <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -31,14 +32,24 @@
             @foreach ($comics as $item )
             <tr class="">
                 <td>
-                        {{$item->title}}</a>
+                    <a href="{{route('comics.show',$item->id)}}"> {{$item->title}}</a>
+                       
                 </td>
+                <td>{{$item->id}}</td>
                 <td>{{$item->description}}</td>
                 <td>{{$item->thumb}}</td>
                 <td>{{$item->price}}</td>
                 <td>{{$item->series}}</td>
                 <td>{{$item->sale_date}}</td>
                 <td>{{$item->type}}</td>
+                <td>
+                    <form action="{{route('comics.destroy', $item->id)}}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">Elimina</button>
+                    </form>
+                    <a href="{{route('comics.edit',$item->id)}}">Modifica</a>
+                </td>
 
             </tr>
             @endforeach

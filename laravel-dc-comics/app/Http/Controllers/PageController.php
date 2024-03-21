@@ -27,5 +27,7 @@ class PageController extends Controller
         $new_comic = new Comic(); 
         $new_comic->fill();
         $new_comic->save();
+
+      
     }
 }
