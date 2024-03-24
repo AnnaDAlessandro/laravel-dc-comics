@@ -30,13 +30,13 @@ class ComicsController extends Controller
     public function store(Request $request)
 {
     $request->validate([
-        'title' => 'required',
-        'description' => 'required',
-        'thumb' => 'required',
+        'title' => 'required|max:255|unique:comics,title',
+        'description' => 'required|max:8192',
+        'thumb' => 'required|max:255',
         'price' => 'required',
-        'series' => 'required',
+        'series' => 'required|max:255',
         'sale_date' => 'required',
-        'type' => 'required',
+        'type' => 'required|max:255',
     ]);
 
     $formData = $request->all();
@@ -45,7 +45,7 @@ class ComicsController extends Controller
     $new_comic->fill($formData); // Fill the model with form data
     $new_comic->save();
 
-    return redirect()->route('comics.show', ['comics' => $new_comic->id]);
+    return redirect()->route('comics.show', ['comic' => $new_comic->id]);
 }
     /**
      * Display the specified resource.
@@ -70,6 +70,21 @@ class ComicsController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            'title' => 'required|max:255|unique:comics,title',
+            'description' => 'required|max:8192',
+            'thumb' => 'required|max:255',
+            'price' => 'required',
+            'series' => 'required|max:255',
+            'sale_date' => 'required',
+            'type' => 'required|max:255',
+        ]);
+    
+
+
+
+
+
         $formData = $request->all();
         $comic = Comics::findOrFail($id);
         $comic->update($formData);
